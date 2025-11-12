@@ -37,7 +37,10 @@ export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds
     },
   ],
   create(context) {
-    const [{ allowFalseLiteral = false }] = context.options as Options[];
+    // Robust to missing options: default to [{}] if undefined
+    const optionsArr = context.options ?? [{}];
+    const options = optionsArr[0] ?? {};
+    const allowFalseLiteral = options.allowFalseLiteral ?? false;
     const parserServices = getTemplateParserServices(context);
     return {
       BoundAttribute(node: any) {
