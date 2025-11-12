@@ -1,0 +1,100 @@
+{
+  "name": "@yoo-digital/eslint-config-base",
+  "description": "ESLint configuration file containing rules for TypeScript projects",
+  "version": "3.0.0",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "TypeScript",
+    "ESLint"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yoo-digital/config.git",
+    "directory": "packages/eslint-config-base"
+  },
+  "author": {
+    "name": "YOO AG",
+    "email": "info@yoo.digital",
+    "url": "https://www.yoo.digital/"
+  },
+  "contributors": [
+    {
+      "name": "Björn Bühler",
+      "email": "bjoern.buehler@yoo.digital"
+    },
+    {
+      "name": "Cédric Madörin",
+      "email": "cedric.madoerin@yoo.digital"
+    },
+    {
+      "name": "Emanuel Marsicovetere",
+      "email": "emanuel.marsicovetere@yoo.digital"
+    },
+    {
+      "name": "Hervé Brunner",
+      "email": "herve.brunner@yoo.digital"
+    },
+    {
+      "name": "Kelvin Louis",
+      "email": "kelvin.louis@yoo.digital"
+    },
+    {
+      "name": "Robin Hahne",
+      "email": "robin.hahne@yoo.digital"
+    },
+    {
+      "name": "Sacha Schmid",
+      "email": "sacha.schmid@yoo.digital"
+    },
+    {
+      "name": "Tobias Maier",
+      "email": "tobias.maier@yoo.digital"
+    },
+    {
+      "name": "Tobias Wahl",
+      "email": "tobias.wahl@yoo.digital"
+    },
+    {
+      "name": "Yanick Recher",
+      "email": "yanick.recher@yoo.digital"
+    }
+  ],
+  "exports": {
+    ".": {
+      "import": "./eslint.config.mjs",
+      "require": "./eslint.config.mjs"
+    },
+    "./legacy": {
+      "import": "./legacy.js",
+      "require": "./legacy.js"
+    }
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "legacy.js",
+    "eslint.config.mjs",
+    "tsconfig.json"
+  ],
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "eslint": "^9.33.0",
+    "eslint-import-resolver-typescript": "^4.4.0",
+    "eslint-plugin-import": "^2.32.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.40.0"
+  },
+  "peerDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@typescript-eslint/parser": "^8.40.0",
+    "eslint": "^9.0.0",
+    "eslint-import-resolver-typescript": "^4.4.0",
+    "eslint-plugin-import": "^2.32.0",
+    "typescript": "^5.6.0",
+    "typescript-eslint": "^8.40.0"
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "name": "@yoo-digital/config",
+  "description": "YOO configuration mono repository containing reusable configurations for web projects.",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "keywords": [
+    "YOO",
+    "Mono Repository",
+    "Configuration",
+    "Prettier",
+    "ESLint",
+    "TypeScript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yoo-digital/config.git"
+  },
+  "author": {
+    "name": "YOO AG",
+    "email": "info@yoo.digital",
+    "url": "https://www.yoo.digital/"
+  },
+  "contributors": [
+    {
+      "name": "Björn Bühler",
+      "email": "bjoern.buehler@yoo.digital"
+    },
+    {
+      "name": "Cédric Madörin",
+      "email": "cedric.madoerin@yoo.digital"
+    },
+    {
+      "name": "Daniel Kohler",
+      "email": "daniel.kohler@yoo.digital"
+    },
+    {
+      "name": "Emanuel Marsicovetere",
+      "email": "emanuel.marsicovetere@yoo.digital"
+    },
+    {
+      "name": "Hervé Brunner",
+      "email": "herve.brunner@yoo.digital"
+    },
+    {
+      "name": "Kelvin Louis",
+      "email": "kelvin.louis@yoo.digital"
+    },
+    {
+      "name": "Robin Hahne",
+      "email": "robin.hahne@yoo.digital"
+    },
+    {
+      "name": "Sacha Schmid",
+      "email": "sacha.schmid@yoo.digital"
+    },
+    {
+      "name": "Tobias Maier",
+      "email": "tobias.maier@yoo.digital"
+    },
+    {
+      "name": "Tobias Wahl",
+      "email": "tobias.wahl@yoo.digital"
+    },
+    {
+      "name": "Yanick Recher",
+      "email": "yanick.recher@yoo.digital"
+    }
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build --parallel",
+    "start": "turbo run start --parallel",
+    "lint": "turbo run lint --parallel",
+    "format": "turbo run format --parallel",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "changeset:status": "changeset status"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.5",
+    "@typescript-eslint/parser": "^8.41.0",
+    "@yoo-digital/prettier": "*",
+    "turbo": "^2.5.4"
+  },
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "packageManager": "npm@11.3.0",
+  "engines": {
+    "node": "^24.0.0",
+    "npm": "^11.3.0"
+  },
+  "prettier": "@yoo-digital/prettier"
+}

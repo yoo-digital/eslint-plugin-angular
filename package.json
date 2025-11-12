@@ -1,0 +1,40 @@
+{
+  "name": "@yoo-digital/eslint-plugin-angular",
+  "version": "0.1.0",
+  "description": "Yoo Digital custom Angular ESLint plugin providing prefer-boolean-attribute-shorthand rule. Placeholder implementation until logic copied from ng-custom-lint-v2.",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src --ext .ts",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": ["eslint", "eslintplugin", "angular", "lint", "yoo-digital"],
+  "author": "Yoo Digital",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yoo-digital/eslint-plugin-angular.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yoo-digital/eslint-plugin-angular/issues"
+  },
+  "homepage": "https://github.com/yoo-digital/eslint-plugin-angular#readme",
+  "peerDependencies": {
+    "eslint": "^9.0.0",
+    "typescript": ">=5.9.0",
+    "@angular-eslint/eslint-plugin": "^20.5.0",
+    "@angular-eslint/template-parser": "^20.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@typescript-eslint/utils": "^8.7.0",
+    "eslint": "^9.12.0",
+    "@angular-eslint/eslint-plugin": "^20.5.0",
+    "@angular-eslint/template-parser": "^20.5.0",
+    "@types/node": "^20.11.0"
+  }
+}
