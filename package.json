@@ -1,18 +1,26 @@
 {
   "name": "@tapiocadesign/eslint-plugin-angular",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Yoo Digital custom Angular ESLint plugin providing prefer-boolean-attribute-shorthand rule. Placeholder implementation until logic copied from ng-custom-lint-v2.",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src --ext .ts",
     "prepublishOnly": "npm run clean && npm run build"
   },
-  "keywords": ["eslint", "eslintplugin", "angular", "lint", "yoo-digital"],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "angular",
+    "lint",
+    "yoo-digital"
+  ],
   "author": "Yoo Digital",
   "license": "MIT",
   "repository": {
