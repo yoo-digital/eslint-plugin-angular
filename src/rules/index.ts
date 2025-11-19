@@ -1,2 +1,1 @@
-export { RULE_NAME, preferBooleanAttributeShorthandRule } from './prefer-boolean-attribute-shorthand';
-
+export { preferBooleanAttributeShorthandRule, RULE_NAME } from './prefer-boolean-attribute-shorthand';
