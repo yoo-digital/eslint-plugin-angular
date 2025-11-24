@@ -8,9 +8,7 @@ Here should live all custom Angular lint rules that eslint does not already prov
 
 Wrong code is yellow underlined in VScode, it can also be raises running : `npm run lint`
 
-## First rule
-
-For this commit, there is only one rule : boolean input conversion : 
+## Rule 1 : boolean input conversion
 
 `booleanAttribute @angular/core`
 
@@ -18,7 +16,7 @@ For this commit, there is only one rule : boolean input conversion :
 
 ### Examples
 
-`<myComp [myBoolInput]="true"` must be `<myComp myBoolInput`
+`<myComp [myBoolInput]="true" ` must be `<myComp myBoolInput`
 
 `<myComp [myBoolInput]="false"` must be `<myComp `
 
