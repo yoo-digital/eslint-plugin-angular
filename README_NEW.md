@@ -58,20 +58,55 @@ Manual enabling:
 
 ### Rule: prefer-boolean-attribute-shorthand
 
-Enforces using boolean attribute shorthand when the value is explicitly `true`.
+Enforces using boolean attribute shorthand (`attr` instead of `[attr]="true"`) for cleaner template syntax.
 
-Incorrect:
+⚠️ **Important**: This rule **cannot** automatically verify whether inputs have `booleanAttribute` transform or check default values. This is a technical limitation - template ESLint rules cannot access component TypeScript code.
+
+**Use this rule only if**:
+- All boolean inputs in your codebase use `booleanAttribute` transform
+- Most inputs have `default = false` or no default
+- You want to enforce consistent template style
+
+#### Basic Example
 
 ```html
-<button disabled="true">Click</button>
-<input [required]="true" />
+<!-- ❌ Avoid -->
+<button [disabled]="true">Click</button>
+
+<!-- ✅ Prefer -->
+<button disabled>Click</button>
 ```
 
-Correct:
+#### Configuration
+
+Default (safe - only flags true bindings):
+```jsonc
+{
+  "rules": {
+    "@yoo-digital/eslint-plugin-angular/prefer-boolean-attribute-shorthand": "error"
+  }
+}
+```
+
+Strict mode (also enforces false binding removal):
+```jsonc
+{
+  "rules": {
+    "@yoo-digital/eslint-plugin-angular/prefer-boolean-attribute-shorthand": [
+      "error",
+      { "allowFalseLiteral": false }
+    ]
+  }
+}
+```
+
+#### When to disable
+
+Disable for specific lines when input has `default = true`:
 
 ```html
-<button disabled>Click</button>
-<input required />
+<!-- eslint-disable-next-line @yoo-digital/eslint-plugin-angular/prefer-boolean-attribute-shorthand -->
+<button [enabled]="false">Override default true</button>
 ```
 
 ### Development
