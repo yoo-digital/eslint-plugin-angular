@@ -1,6 +1,6 @@
 {
   "name": "@yoo-digital/eslint-plugin-angular",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Yoo Digital custom Angular ESLint plugin providing prefer-boolean-attribute-shorthand rule.",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/yoo-digital/eslint-plugin-angular#readme",
   "peerDependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "typescript": ">=5.5.0 <5.7.0",
   "@angular-eslint/eslint-plugin": ">=19.0.0 <21.0.0",
   "@angular-eslint/template-parser": ">=19.0.0 <21.0.0"
@@ -40,7 +40,7 @@
   "devDependencies": {
     "typescript": "^5.9.3",
     "@typescript-eslint/utils": "^8.7.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.0.0",
     "@angular-eslint/eslint-plugin": "^20.5.0",
     "@angular-eslint/template-parser": "^20.5.0",
     "@types/node": "^20.11.0"
