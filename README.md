@@ -6,32 +6,17 @@ Here should live all custom Angular lint rules that eslint does not already prov
 
 ## Linting
 
-Wrong code is yellow underlined in VScode, it can also be raises running : `npm run lint`
+Wrong code is yellow/red underlined in VScode, it can also be raises running : `npm run lint`
 
-## Rule 1 : boolean input conversion (prefer-boolean-attribute-shorthand)
+---
+
+## Rule 1 : boolean input conversion
 
 `booleanAttribute @angular/core`
 
 `BooleanInput @angular/cdk/coercion`
 
-### ⚠️ Important Limitations
-
-**Current Implementation:** This rule enforces shorthand syntax (`<x a />` instead of `<x [a]="true" />`) but **cannot automatically verify**:
-- Whether an input has `transform: booleanAttribute` 
-- What the default value of an input is
-
-This is a technical limitation of Angular ESLint - template rules cannot access the component's TypeScript code.
-
-### Recommended Usage
-
-This rule works best when:
-1. **All boolean inputs** in your project use `booleanAttribute` transform
-2. **Most boolean inputs** have `default = false` or no default
-3. You treat this as a **style guide enforcer** rather than a safety checker
-
-### Configuration
-
-The rule only flags `[attr]="true"` bindings and ignores `[attr]="false"` bindings:
+The rule only flags components inputs `[isVegan]="true"` bindings and ignores `[isVegan]="false"` bindings:
 
 ```json
 {
@@ -41,64 +26,24 @@ The rule only flags `[attr]="true"` bindings and ignores `[attr]="false"` bindin
 }
 ```
 
-This rule has no configuration options.
-
 ### Examples
 
-#### ✅ Recommended Pattern (Default false or no default)
-
-```typescript
-// Component
-@Input({ transform: booleanAttribute }) disabled: boolean = false;
-// OR
-disabled = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
-```
-
-**Template:**
-- ❌ `<button [disabled]="true">` → Should be `<button disabled>`
-- ✅ `<button disabled>` (shorthand for true)
-- ✅ `<button>` (omit for false)
-- ✅ `<button [disabled]="false">` (explicit false - no warning)
-- ✅ `<button [disabled]="isLoading">` (expressions are allowed)
-
-#### ⚠️ Special Case: Default true (Disable rule if needed)
-
-```typescript
-// Component
-@Input({ transform: booleanAttribute }) enabled: boolean = true;
-```
-
-**Template:**
 ```html
-<!-- eslint-disable-next-line @yoo-digital/eslint-plugin-angular/prefer-boolean-attribute-shorthand -->
-<button [enabled]="false">Explicitly disabled</button>
+<!-- this will raise lint issue -->
+<myMealComponent [isVegan]="true" />
+<!-- false value raises no lint issue (ignored) -->
+<myMealComponent [isVegan]="false" />
 ```
 
-When default is `true`, you may need explicit `[attr]="true"` or `[attr]="false"` bindings.
-
-#### ❌ Without booleanAttribute (Won't work!)
+Lint enforces use of boolean attribute : 
 
 ```typescript
-// Component - Missing transform!
-@Input() checked: boolean = false;
+// Modern signal way
+isVegan = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
+// Old decorator way
+@Input({ transform: booleanAttribute }) isVegan: boolean = false;
 ```
 
-**Template:**
-- ❌ `<input checked>` → Will pass `""` (empty string), NOT boolean!
-- ✅ `<input [checked]="true">` (must use property binding)
+---
 
-### Decorator Syntax
-
-`@Input({ transform: booleanAttribute }) myInput: boolean = false;`
-
-### Signal Input Syntax
-
-`myInput = input<boolean, BooleanInput>(false, { transform: booleanAttribute });`
-
-### Summary
-
-- **Rule enforces**: `[attr]="true"` → `attr` shorthand
-- **Rule ignores**: `[attr]="false"` bindings (no warning)
-- **Rule assumes**: Inputs have `booleanAttribute` and `default ≠ true`
-- **Manual override**: Use eslint-disable comments for special cases
-- **Best practice**: Ensure all boolean inputs use `booleanAttribute`
+## Rule 2 : ...
