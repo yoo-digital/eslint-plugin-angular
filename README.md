@@ -31,7 +31,7 @@ This rule works best when:
 
 ### Configuration
 
-By default, the rule only flags `[attr]="true"` bindings (safe default):
+The rule only flags `[attr]="true"` bindings and ignores `[attr]="false"` bindings:
 
 ```json
 {
@@ -41,18 +41,7 @@ By default, the rule only flags `[attr]="true"` bindings (safe default):
 }
 ```
 
-To also enforce removal of `[attr]="false"` bindings:
-
-```json
-{
-  "rules": {
-    "@yoo-digital/eslint-plugin-angular/prefer-boolean-attribute-shorthand": [
-      "error",
-      { "allowFalseLiteral": false }
-    ]
-  }
-}
-```
+This rule has no configuration options.
 
 ### Examples
 
@@ -69,6 +58,7 @@ disabled = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
 - ❌ `<button [disabled]="true">` → Should be `<button disabled>`
 - ✅ `<button disabled>` (shorthand for true)
 - ✅ `<button>` (omit for false)
+- ✅ `<button [disabled]="false">` (explicit false - no warning)
 - ✅ `<button [disabled]="isLoading">` (expressions are allowed)
 
 #### ⚠️ Special Case: Default true (Disable rule if needed)
@@ -108,6 +98,7 @@ When default is `true`, you may need explicit `[attr]="true"` or `[attr]="false"
 ### Summary
 
 - **Rule enforces**: `[attr]="true"` → `attr` shorthand
+- **Rule ignores**: `[attr]="false"` bindings (no warning)
 - **Rule assumes**: Inputs have `booleanAttribute` and `default ≠ true`
 - **Manual override**: Use eslint-disable comments for special cases
 - **Best practice**: Ensure all boolean inputs use `booleanAttribute`

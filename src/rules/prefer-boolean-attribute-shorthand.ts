@@ -1,76 +1,46 @@
 import { getTemplateParserServices } from '@angular-eslint/utils';
 import type { TSESLint } from '@typescript-eslint/utils';
 
-interface Options {
-  allowFalseLiteral?: boolean;
-}
-type MessageIds = 'preferTrue' | 'preferFalse' | 'suggestTrue' | 'suggestRemove';
+type MessageIds = 'preferTrue' | 'suggestTrue';
 
 export const RULE_NAME = 'prefer-boolean-attribute-shorthand';
 
 /**
- * IMPORTANT LIMITATIONS:
+ * This rule enforces shorthand syntax for boolean inputs bound to true.
  * 
- * Angular ESLint template rules cannot directly access the TypeScript component class
- * to check for booleanAttribute transforms or default values. This would require:
- * 1. Access to the TypeScript program (not available in template parser services)
- * 2. Cross-file analysis (template -> component.ts)
- * 3. Complex AST traversal and decorator/signal input analysis
+ * BEHAVIOR:
+ * - [attr]="true"  → Warns and suggests: attr
+ * - [attr]="false" → No warning (ignored)
+ * - attr           → OK (already shorthand)
  * 
- * The current implementation enforces shorthand syntax for [attr]="true" bindings
- * but cannot verify:
- * - Whether the input has `transform: booleanAttribute`
- * - What the default value of the input is
+ * ASSUMPTIONS:
+ * This rule assumes that boolean inputs use Angular's booleanAttribute transform,
+ * which allows the shorthand syntax to work correctly. The presence of the attribute
+ * alone (without a binding) will be interpreted as true.
  * 
- * RECOMMENDATIONS FOR USERS:
- * 1. Only use this rule in projects where ALL boolean inputs have booleanAttribute
- * 2. If an input has default=true, manually disable the rule for that binding
- * 3. Consider the rule as a style guide enforcer, not a safety checker
+ * LIMITATIONS:
+ * Cannot verify at lint-time whether:
+ * - The input actually has `transform: booleanAttribute`
+ * - The input's default value
  * 
- * FUTURE ENHANCEMENTS:
- * To implement the full feature set requested would require creating a SEPARATE
- * TypeScript ESLint rule that:
- * - Runs on .ts component files (not templates)
- * - Analyzes @Component decorators to find template  references
- * - Parses templates and cross-references with component inputs
- * - Reports errors in both .ts and template files
- * 
- * This would be a significantly more complex multi-file analysis rule.
+ * Use this rule in projects where boolean inputs consistently use booleanAttribute.
  */
 
-export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds, Options[]> = {
+export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds, []> = {
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Prefer boolean input attribute shorthand instead of binding to literal true/false. NOTE: This rule assumes inputs have booleanAttribute transform and does not have default=true.',
+      description: 'Prefer boolean input attribute shorthand when binding to true (e.g., use "disabled" instead of [disabled]="true").',
     },
     hasSuggestions: true,
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowFalseLiteral: { type: 'boolean' },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
     messages: {
-      preferTrue: 'Use attribute shorthand "{{attr}}" instead of [{{attr}}]="true". WARNING: Only works if input has booleanAttribute transform.',
-      preferFalse: 'Avoid binding [{{attr}}]="false"; remove the binding if default is false.',
+      preferTrue: 'Use attribute shorthand "{{attr}}" instead of [{{attr}}]="true".',
       suggestTrue: 'Replace with attribute shorthand {{attr}}',
-      suggestRemove: 'Remove the false binding',
     },
   },
-  defaultOptions: [
-    {
-      allowFalseLiteral: true, // Changed default to true for safety
-    },
-  ],
+  defaultOptions: [],
   create(context) {
-    // Robust to missing options: default to [{}] if undefined
-    const optionsArr = context.options ?? [{}];
-    const options = optionsArr[0] ?? {};
-    const allowFalseLiteral = options.allowFalseLiteral ?? true; // Default to true for safety
     const parserServices = getTemplateParserServices(context);
     
     return {
@@ -79,15 +49,15 @@ export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds
         if (!value || !value.ast) return;
         const ast = value.ast;
         
+        // Only check for boolean literals
         if (ast?.constructor?.name === 'LiteralPrimitive' && typeof ast.value === 'boolean') {
-          const attrName: string = node.name;
-          const loc = parserServices.convertNodeSourceSpanToLoc(node.sourceSpan);
-          const start: number = node.sourceSpan.start.offset;
-          const end: number = node.sourceSpan.end.offset;
-          
+          // Only warn for [attr]="true", ignore [attr]="false"
           if (ast.value === true) {
-            // Enforce shorthand for true bindings
-            // NOTE: This assumes the input has booleanAttribute and default != true
+            const attrName: string = node.name;
+            const loc = parserServices.convertNodeSourceSpanToLoc(node.sourceSpan);
+            const start: number = node.sourceSpan.start.offset;
+            const end: number = node.sourceSpan.end.offset;
+            
             context.report({
               loc,
               messageId: 'preferTrue',
@@ -100,21 +70,8 @@ export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds
                 },
               ],
             });
-          } else if (ast.value === false && !allowFalseLiteral) {
-            // Only flag false bindings if explicitly configured
-            context.report({
-              loc,
-              messageId: 'preferFalse',
-              data: { attr: attrName },
-              suggest: [
-                {
-                  messageId: 'suggestRemove',
-                  data: { attr: attrName },
-                  fix: (fixer) => fixer.replaceTextRange([start, end], ''),
-                },
-              ],
-            });
           }
+          // [attr]="false" is explicitly ignored - no warning
         }
       },
     };

@@ -1,6 +1,6 @@
 {
   "name": "@yoo-digital/eslint-plugin-angular",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Yoo Digital custom Angular ESLint plugin providing prefer-boolean-attribute-shorthand rule.",
   "type": "commonjs",
   "main": "dist/index.js",
