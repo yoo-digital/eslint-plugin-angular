@@ -131,3 +131,13 @@ HTML set it true or false this way :
 <!-- False value  -->
 <mealComponent />
 ```
+
+#### Computed
+
+Those will raise no lint issues : 
+
+```html
+<mealComponent [isVegan]="myProperty" />
+<mealComponent [isVegan]="2+2===4" />
+
+```
