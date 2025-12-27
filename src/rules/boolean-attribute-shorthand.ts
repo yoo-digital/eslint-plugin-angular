@@ -3,7 +3,7 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 type MessageIds = 'preferTrue' | 'suggestTrue';
 
-export const RULE_NAME = 'boolean-attribute-html';
+export const RULE_NAME = 'boolean-attribute-shorthand';
 
 /**
  * This rule enforces shorthand syntax for boolean inputs bound to true.
@@ -32,6 +32,7 @@ export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds
     docs: {
       description: 'Prefer boolean input attribute shorthand when binding to true (e.g., use "disabled" instead of [disabled]="true").',
     },
+    fixable: 'code',
     schema: [],
     messages: {
       preferTrue: 'Use attribute shorthand "{{attr}}" instead of [{{attr}}]="true".',
@@ -54,11 +55,14 @@ export const preferBooleanAttributeShorthandRule: TSESLint.RuleModule<MessageIds
           if (ast.value === true) {
             const attrName: string = node.name;
             const loc = parserServices.convertNodeSourceSpanToLoc(node.sourceSpan);
+            const start: number = node.sourceSpan.start.offset;
+            const end: number = node.sourceSpan.end.offset;
             
             context.report({
               loc,
               messageId: 'preferTrue',
               data: { attr: attrName },
+              fix: (fixer) => fixer.replaceTextRange([start, end], attrName),
             });
           }
           // [attr]="false" is explicitly ignored - no warning

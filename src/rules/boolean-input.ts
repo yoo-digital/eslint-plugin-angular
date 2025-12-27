@@ -3,7 +3,7 @@ import { TSESTree } from '@typescript-eslint/utils';
 
 type MessageIds = 'requireTransformDecorator' | 'requireTransformSignal';
 
-export const RULE_NAME = 'boolean-attribute-ts';
+export const RULE_NAME = 'boolean-input';
 
 /**
  * This rule enforces that boolean @Input() properties and input() signals
@@ -23,6 +23,7 @@ export const requireBooleanAttributeTransformRule: TSESLint.RuleModule<MessageId
     docs: {
       description: 'Require booleanAttribute transform on boolean @Input() properties and input() signals.',
     },
+    fixable: 'code',
     schema: [],
     messages: {
       requireTransformDecorator: 'Boolean @Input() "{{name}}" must use transform: booleanAttribute',
@@ -31,6 +32,8 @@ export const requireBooleanAttributeTransformRule: TSESLint.RuleModule<MessageId
   },
   defaultOptions: [],
   create(context) {
+    const sourceCode = context.sourceCode || context.getSourceCode();
+    
     return {
       // Handle both @Input() decorator syntax and input() signal syntax
       PropertyDefinition(node: TSESTree.PropertyDefinition) {
@@ -80,6 +83,41 @@ export const requireBooleanAttributeTransformRule: TSESLint.RuleModule<MessageId
             node: node.key,
             messageId: 'requireTransformDecorator',
             data: { name: propertyName },
+            fix(fixer) {
+              if (!inputDecorator) {
+                return null;
+              }
+
+              const decoratorNode = inputDecorator.expression;
+              if (decoratorNode.type !== 'CallExpression') {
+                return null;
+              }
+
+              // Use the decorator's range (includes @) not just the expression
+              const decoratorStart = inputDecorator.range[0];
+              const decoratorEnd = inputDecorator.range[1];
+
+              // Generate the fixed decorator (without @ since we're replacing the full decorator)
+              let newDecorator: string;
+              if (decoratorNode.arguments.length === 0) {
+                // @Input() → @Input({ transform: booleanAttribute })
+                newDecorator = '@Input({ transform: booleanAttribute })';
+              } else if (decoratorNode.arguments[0].type === 'ObjectExpression') {
+                // @Input({ ... }) → @Input({ ..., transform: booleanAttribute })
+                const objExpr = decoratorNode.arguments[0];
+                const objText = sourceCode.getText(objExpr);
+                const closingBrace = objText.lastIndexOf('}');
+                const existingProps = objText.substring(1, closingBrace).trim();
+                const separator = existingProps ? ', ' : '';
+                newDecorator = `@Input({ ${existingProps}${separator}transform: booleanAttribute })`;
+              } else {
+                // @Input('alias') → @Input({ alias: 'alias', transform: booleanAttribute })
+                const aliasArg = sourceCode.getText(decoratorNode.arguments[0]);
+                newDecorator = `@Input({ alias: ${aliasArg}, transform: booleanAttribute })`;
+              }
+
+              return fixer.replaceTextRange([decoratorStart, decoratorEnd], newDecorator);
+            },
           });
           return;
         }
@@ -143,6 +181,18 @@ export const requireBooleanAttributeTransformRule: TSESLint.RuleModule<MessageId
           node: node.key,
           messageId: 'requireTransformSignal',
           data: { name: propertyName },
+          fix(fixer) {
+            const callStart = callExpr.range[0];
+            const callEnd = callExpr.range[1];
+            
+            // Get the default value argument
+            const defaultValue = callExpr.arguments[0] ? sourceCode.getText(callExpr.arguments[0]) : 'false';
+            
+            // Build the new call expression
+            const newCall = `input<boolean, BooleanInput>(${defaultValue}, { transform: booleanAttribute })`;
+            
+            return fixer.replaceTextRange([callStart, callEnd], newCall);
+          },
         });
       },
 

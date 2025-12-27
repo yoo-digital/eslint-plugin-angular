@@ -1,48 +1,29 @@
 # YOO ESLint plugin Angular
 
-## Custom lint purpose
+## Aim
 
-Here should live all custom Angular lint rules that eslint does not already provide.
+Here should live all ***custom Angular lint rules*** that eslint does not already provide.
 
-## Linting
+## Use
 
-Wrong code is yellow/red underlined in VScode, it can also be raised running : `npm run lint`, autofixing them with : `npm run lint:fix`
+Wrong code is yellow/red underlined in VScode, it can also be raised running : `npm run lint`
+Autofixing lint issues with : `npm run lint:fix`
 
-## 1️⃣ Boolean input conversion
+## 1️⃣ boolean-input
 
-This feature consists of **two complementary rules**:
-
-1. **`boolean-attribute-ts`** - TypeScript rule that enforces `booleanAttribute` transform on boolean inputs
-2. **`boolean-attribute-html`** - Template rule that enforces shorthand syntax for `[attr]="true"` bindings
+TypeScript rule that enforces `booleanAttribute` transform on boolean inputs
 
 ### Setting 
 ```json
 {
+  "files": ["**/*.ts"],
   "rules": {
-    "@yoo-digital/eslint-plugin-angular/boolean-attribute-ts": "error",
-    "@yoo-digital/eslint-plugin-angular/boolean-attribute-html": "error"
+    "@yoo-digital/eslint-plugin-angular/boolean-input": "error"
   }
 }
 ```
 
-### HTML 
-
-#### True value 
-```html
-<mealComponent [isVegan]="true" />
-<!-- Lint issue enforcing to be :  --> 
-<mealComponent isVegan />
-```
-
-#### False value (bypassed)
-```html
-<mealComponent [isVegan]="false" />
-<!-- No lint issue, to be able to address false value for a default true input -->
-```
-
-### Typescript
-
-#### Imports
+#### Import
 `booleanAttribute @angular/core`
 
 `BooleanInput @angular/cdk/coercion`
@@ -61,7 +42,58 @@ isVegan = input<boolean, BooleanInput>(true|false, { transform: booleanAttribute
 @Input({ transform: booleanAttribute }) isVegan: boolean = true|false;
 ```
 
-### Default value 
+### Required boolean input
+
+Should be avoided as it might be in conflict with `boolean-attribute-shorthand` 
+```typescript
+isVegan = input.required<boolean, BooleanInput>({
+  transform: booleanAttribute,
+});
+```
+
+```html
+<!-- This will not work : -->
+<!-- True value  -->
+<mealComponent isVegan />
+<!-- False value  -->
+<mealComponent />
+
+<!-- Values must be set, which does not respect boolean-attribute-shorthand : -->
+<!-- True value  -->
+<mealComponent [isVegan]="true" />
+<!-- False value  -->
+<mealComponent [isVegan]="false" />
+```
+
+
+## 2️⃣ boolean-attribute-shorthand
+
+HTML rule that enforces shorthand syntax for `[attr]="true"` bindings
+
+### Setting 
+```json
+{
+  "files": ["**/*.html"],
+  "rules": {
+    "@yoo-digital/eslint-plugin-angular/boolean-attribute-shorthand": "error"
+  }
+}
+```
+
+#### True value 
+```html
+<mealComponent [isVegan]="true" />
+<!-- Lint issue, must become :  --> 
+<mealComponent isVegan />
+```
+
+#### False value (bypassed)
+```html
+<mealComponent [isVegan]="false" />
+<!-- No lint issue, to be able to address false value for a default true input -->
+```
+
+### Right usage 
 #### Default true 
 
 If boolean input is by default **true**
@@ -99,5 +131,3 @@ HTML set it true or false this way :
 <!-- False value  -->
 <mealComponent />
 ```
-
-## 2️⃣ ...

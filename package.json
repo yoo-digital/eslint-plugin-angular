@@ -1,6 +1,6 @@
 {
   "name": "@yoo-digital/eslint-plugin-angular",
-  "version": "2.0.5",
+  "version": "3.0.8",
   "description": "Yoo Digital custom Angular ESLint plugin for enforcing boolean attribute best practices.",
   "type": "commonjs",
   "main": "dist/index.js",
