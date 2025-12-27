@@ -1,20 +1,23 @@
-import { preferBooleanAttributeShorthandRule } from './rules';
+import { preferBooleanAttributeShorthandRule, requireBooleanAttributeTransformRule } from './rules';
 
 export const rules: Record<string, any> = {
-  'prefer-boolean-attribute-shorthand': preferBooleanAttributeShorthandRule,
+  'boolean-attribute-html': preferBooleanAttributeShorthandRule,
+  'boolean-attribute-ts': requireBooleanAttributeTransformRule,
 };
 
 export const configs = {
   default: {
     plugins: ['@yoo-digital/eslint-plugin-angular'],
     rules: {
-      '@yoo-digital/angular/prefer-boolean-attribute-shorthand': 'warn',
+      '@yoo-digital/angular/boolean-attribute-html': 'warn',
+      '@yoo-digital/angular/boolean-attribute-ts': 'warn',
     },
   },
   recommended: {
     plugins: ['@yoo-digital/eslint-plugin-angular'],
     rules: {
-      '@yoo-digital/angular/prefer-boolean-attribute-shorthand': 'error',
+      '@yoo-digital/angular/boolean-attribute-html': 'error',
+      '@yoo-digital/angular/boolean-attribute-ts': 'error',
     },
   },
 };

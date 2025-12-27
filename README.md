@@ -10,11 +10,17 @@ Wrong code is yellow/red underlined in VScode, it can also be raised running : `
 
 ## 1️⃣ Boolean input conversion
 
+This feature consists of **two complementary rules**:
+
+1. **`boolean-attribute-ts`** - TypeScript rule that enforces `booleanAttribute` transform on boolean inputs
+2. **`boolean-attribute-html`** - Template rule that enforces shorthand syntax for `[attr]="true"` bindings
+
 ### Setting 
 ```json
 {
   "rules": {
-    "@yoo-digital/eslint-plugin-angular/prefer-boolean-attribute-shorthand": "error"
+    "@yoo-digital/eslint-plugin-angular/boolean-attribute-ts": "error",
+    "@yoo-digital/eslint-plugin-angular/boolean-attribute-html": "error"
   }
 }
 ```
