@@ -1,4 +1,4 @@
-# eslint-plugin-angular
+# YOO ESLint plugin Angular
 
 ## Custom lint purpose
 
@@ -6,18 +6,11 @@ Here should live all custom Angular lint rules that eslint does not already prov
 
 ## Linting
 
-Wrong code is yellow/red underlined in VScode, it can also be raises running : `npm run lint`
+Wrong code is yellow/red underlined in VScode, it can also be raised running : `npm run lint`, autofixing them with : `npm run lint:fix`
 
----
+## 1️⃣ Boolean input conversion
 
-## Rule 1 : boolean input conversion
-
-`booleanAttribute @angular/core`
-
-`BooleanInput @angular/cdk/coercion`
-
-The rule only flags components inputs `[isVegan]="true"` bindings and ignores `[isVegan]="false"` bindings:
-
+### Setting 
 ```json
 {
   "rules": {
@@ -26,24 +19,79 @@ The rule only flags components inputs `[isVegan]="true"` bindings and ignores `[
 }
 ```
 
-### Examples
+### HTML 
 
+#### True value 
 ```html
-<!-- this will raise lint issue -->
-<myMealComponent [isVegan]="true" />
-<!-- false value raises no lint issue (ignored) -->
-<myMealComponent [isVegan]="false" />
+<mealComponent [isVegan]="true" />
+<!-- Lint issue enforcing to be :  --> 
+<mealComponent isVegan />
 ```
 
-Lint enforces use of boolean attribute : 
+#### False value (bypassed)
+```html
+<mealComponent [isVegan]="false" />
+<!-- No lint issue, to be able to address false value for a default true input -->
+```
 
+### Typescript
+
+#### Imports
+`booleanAttribute @angular/core`
+
+`BooleanInput @angular/cdk/coercion`
+
+#### Modern signal way
 ```typescript
-// Modern signal way
+isVegan = input<boolean>();
+// Lint issue, must become : 
+isVegan = input<boolean, BooleanInput>(true|false, { transform: booleanAttribute });
+```
+
+#### Old decorator way
+```typescript
+@Input() isVegan?: boolean;
+// Lint issue, must become : 
+@Input({ transform: booleanAttribute }) isVegan: boolean = true|false;
+```
+
+### Default value 
+#### Default true 
+
+If boolean input is by default **true**
+```typescript
+// Modern signal way : 
+isVegan = input<boolean, BooleanInput>(true, { transform: booleanAttribute });
+// Old decorator way : 
+@Input({ transform: booleanAttribute }) isVegan: boolean = true;
+```
+
+HTML set it true or false this way : 
+
+```html
+<!-- True value  -->
+<mealComponent />
+<!-- False value  -->
+<mealComponent [isVegan]="false" />
+```
+
+#### Default false 
+
+If boolean input is by default **false**
+```typescript
+// Modern signal way : 
 isVegan = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
-// Old decorator way
+// Old decorator way : 
 @Input({ transform: booleanAttribute }) isVegan: boolean = false;
 ```
 
----
+HTML set it true or false this way : 
 
-## Rule 2 : ...
+```html
+<!-- True value  -->
+<mealComponent isVegan />
+<!-- False value  -->
+<mealComponent />
+```
+
+## 2️⃣ ...
