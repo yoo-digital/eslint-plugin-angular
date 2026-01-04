@@ -9,6 +9,8 @@ Here should live all ***custom Angular lint rules*** that eslint does not alread
 Wrong code is yellow/red underlined in VScode, it can also be raised running : `npm run lint`
 Autofixing lint issues with : `npm run lint:fix`
 
+## Rules
+
 ## 1️⃣ boolean-input
 
 TypeScript rule that enforces `booleanAttribute` transform on boolean inputs
