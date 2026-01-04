@@ -11,7 +11,7 @@ Autofixing lint issues with : `npm run lint:fix`
 
 ## Rules
 
-## 1️⃣ boolean-input
+## boolean-input
 
 TypeScript rule that enforces `booleanAttribute` transform on boolean inputs
 
@@ -68,7 +68,7 @@ isVegan = input.required<boolean, BooleanInput>({
 ```
 
 
-## 2️⃣ boolean-attribute-shorthand
+## boolean-attribute-shorthand
 
 HTML rule that enforces shorthand syntax for `[attr]="true"` bindings
 
