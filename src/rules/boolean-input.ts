@@ -1,5 +1,4 @@
-import type { TSESLint } from '@typescript-eslint/utils';
-import { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 type MessageIds = 'requireTransformDecorator' | 'requireTransformSignal';
 
@@ -22,6 +21,7 @@ export const requireBooleanAttributeTransformRule: TSESLint.RuleModule<MessageId
     type: 'suggestion',
     docs: {
       description: 'Require booleanAttribute transform on boolean @Input() properties and input() signals.',
+      url: 'https://github.com/yoo-digital/eslint-plugin-angular#boolean-input',
     },
     fixable: 'code',
     schema: [],
@@ -32,7 +32,8 @@ export const requireBooleanAttributeTransformRule: TSESLint.RuleModule<MessageId
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.sourceCode || context.getSourceCode();
+    // ESLint 10 removed context.getSourceCode(); context.sourceCode is available since ESLint 8.40
+    const sourceCode = context.sourceCode;
     
     return {
       // Handle both @Input() decorator syntax and input() signal syntax

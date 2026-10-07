@@ -1,6 +1,6 @@
 {
   "name": "@yoo-digital/eslint-plugin-angular",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Yoo Digital custom Angular ESLint plugin for enforcing boolean attribute best practices.",
   "type": "commonjs",
   "main": "dist/index.js",
@@ -11,8 +11,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsc -p tsconfig.json",
-    "lint": "eslint src --ext .ts",
-    "prepublishOnly": "npm run clean && npm run build"
+    "lint": "eslint src",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "npm run build && node --test tests/*.test.js"
   },
   "keywords": [
     "eslint",
@@ -32,17 +33,19 @@
   },
   "homepage": "https://github.com/yoo-digital/eslint-plugin-angular#readme",
   "peerDependencies": {
-    "eslint": "^9.0.0",
-    "typescript": ">=5.5.0 || ^6.0.0",
     "@angular-eslint/eslint-plugin": ">=19.0.0",
-    "@angular-eslint/template-parser": ">=19.0.0"
+    "@angular-eslint/template-parser": ">=19.0.0",
+    "eslint": "^9.0.0 || ^10.0.0",
+    "typescript": ">=5.5.0 || ^6.0.0"
   },
   "devDependencies": {
+    "@angular-eslint/eslint-plugin": "^22.5.0",
+    "@angular-eslint/template-parser": "^22.5.0",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/parser": "^8.71.1",
+    "@typescript-eslint/utils": "^8.71.1",
+    "eslint": "^10.12.0",
     "typescript": "^6.0.0",
-    "@typescript-eslint/utils": "^8.61.0",
-    "eslint": "^9.39.0",
-    "@angular-eslint/eslint-plugin": "^22.0.0",
-    "@angular-eslint/template-parser": "^22.0.0",
-    "@types/node": "^20.11.0"
+    "typescript-eslint": "^8.71.1"
   }
 }

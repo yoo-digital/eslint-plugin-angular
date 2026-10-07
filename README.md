@@ -9,6 +9,68 @@ Here should live all ***custom Angular lint rules*** that eslint does not alread
 Wrong code is yellow/red underlined in VScode, it can also be raised running : `npm run lint`
 Autofixing lint issues with : `npm run lint:fix`
 
+## Compatibility
+
+| Plugin | ESLint | angular-eslint | TypeScript |
+| ------ | ------ | -------------- | ---------- |
+| 4.1.x  | 9.x, 10.x | >= 19 | >= 5.5, 6.x |
+| 4.0.x  | 9.x | >= 19 | >= 5.5, 6.x |
+
+Only the **flat config** format (`eslint.config.mjs`) is supported, the legacy `.eslintrc` format has been removed in ESLint 10.
+
+## Installation
+
+```bash
+npm install --save-dev @yoo-digital/eslint-plugin-angular
+```
+
+### Option 1 : bundled config
+
+```js
+// eslint.config.mjs
+import { defineConfig } from 'eslint/config';
+import yooConfig from '@yoo-digital/eslint-config-angular';
+import yooAngular from '@yoo-digital/eslint-plugin-angular';
+
+export default defineConfig(
+  ...yooConfig,
+  // "recommended" = errors, "default" = warnings
+  ...yooAngular.configs.recommended,
+);
+```
+
+`boolean-input` is applied to `**/*.ts`, `boolean-attribute-shorthand` to `**/*.html` (inline templates included through `angular.processInlineTemplates`).
+The HTML files must be parsed by `@angular-eslint/template-parser` (already the case with `angular.configs.templateRecommended` / `@yoo-digital/eslint-config-angular`).
+
+### Option 2 : manual registration
+
+```js
+// eslint.config.mjs
+import yooAngular from '@yoo-digital/eslint-plugin-angular';
+
+export default [
+  // ...
+  {
+    files: ['**/*.ts'],
+    plugins: { '@yoo-digital/eslint-plugin-angular': yooAngular },
+    rules: { '@yoo-digital/eslint-plugin-angular/boolean-input': 'error' },
+  },
+  {
+    files: ['**/*.html'],
+    plugins: { '@yoo-digital/eslint-plugin-angular': yooAngular },
+    rules: { '@yoo-digital/eslint-plugin-angular/boolean-attribute-shorthand': 'error' },
+  },
+];
+```
+
+## Development
+
+```bash
+npm run build   # compile to dist/
+npm test        # build + RuleTester tests (node:test)
+npm run lint    # lint the plugin sources
+```
+
 ## Rules
 
 ## boolean-input
